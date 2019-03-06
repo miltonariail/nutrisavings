@@ -5,7 +5,7 @@
     ...
 #>
 
-Function Download-TrackingFile() {
+Function Download-NutrisavingsTracking() {
 $time = (Get-Date).AddDays(-3)
 $Path = "C:\Native Data\Nutrisavings\tracking_files\NS_NativeSun_Tracking_*.txt"
 $DateStamp = ((Get-Date).ToUniversalTime()).ToString("MMddyyy")
@@ -24,7 +24,7 @@ $Session.Disconnect()
 Function Update-NutrisavingsMembers() {
     # Open Excel file
     $excel = new-object -comobject excel.application
-    $filePath = "C:\Native Data\Control Center\Instacart\Instacart Automation Control File.xlsm"
+    $filePath = "C:\Native Data\Control Center\Nutrisavings\Instacart Automation Control File.xlsm"
     $workbook = $excel.Workbooks.Open($FilePath)
     $excel.Visible = $true
     $worksheet = $workbook.worksheets.item(1)
@@ -36,9 +36,27 @@ Function Update-NutrisavingsMembers() {
 }
 
 
+Function Process-NutrisavingsTrasactions() {
+    # Open Excel file
+    $excel = new-object -comobject excel.application
+    $filePath = "C:\Native Data\Control Center\Nutrisavings\Nutrisavings Automation Control File.xlsm"
+    $workbook = $excel.Workbooks.Open($FilePath)
+    $excel.Visible = $true
+    $worksheet = $workbook.worksheets.item(1)
+    $excel.Run("NUTS_MasterFileGenerator")
+    #$workbook.save()
+    $workbook.close()
+    $excel.quit()
+    Write-Host "This Week's Nutrisavings Transactions Are Ready"
+}
 
 
-Download-TrackingFile
+# Download-TrackingFile
+
+Process-NutrisavingsTrasactions
+
+
+
 
 
 
